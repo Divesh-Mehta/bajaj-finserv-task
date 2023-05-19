@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Page</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <h1>Projects</h1>
+    <table id="projectTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Team</th>
+                <th>Tasks</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        // Retrieve the selected employee ID from the URL query parameter
+     
+        // console.log(employeeId)
+        const urlParams = new URLSearchParams(window.location.search);
+        // Retrieve the employee data from the localStorage of the previous page
+        const selectedEmployee = JSON.parse(localStorage.getItem("employeeData"));
+
+        // Find the selected employee in the employee data
+        // console.log(employeeData)
+     
+
+        // Function to populate the table with project data for the selected employee
+        function populateProjectTable() {
+            const projectTable = document.querySelector("#projectTable tbody");
+
+            selectedEmployee.projects.forEach(project => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${project.name}</td>
+                    <td>${project.description}</td>
+                    <td>${getTeamMembers(project.team)}</td>
+                    <td>${getTasks(project.tasks)}</td>
+                `;
+                projectTable.appendChild(row);
+            });
+        }
+
+        // Function to format the team members
+        function getTeamMembers(team) {
+            return team
+                .map(member => member.name ? `${member.name} (${member.role})` : member.role)
+                .join(", ");
+        }
+
+        // Function to format the tasks
+        function getTasks(tasks) {
+            return tasks
+                .map(task => `${task.name} (${task.status || "Undefined"})`)
+                .join(", ");
+        }
+
+        // Call the populateProjectTable function to initialize the table
+        populateProjectTable();
+    </script>
+</body>
+</html>
